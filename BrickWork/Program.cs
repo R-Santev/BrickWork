@@ -22,19 +22,19 @@ namespace BrickWork
              .Select(int.Parse)
              .ToArray();
 
-            //Take N and M from the user input.
+            //Takes N and M from the user input.
             int n = inputFirstRow[0];
             int m = inputFirstRow[1];
 
             //The rectangular area, which builders must cover.
-            //Create the first layer of the construction
+            //Creates the first layer of the construction
             BrickWork construction = new BrickWork(n, m);
 
             //Specifies whether is possible to create second layer of the construction.
-            //If is possible - create it and return true, otherwise return false.
+            //If it is possible - create it and return true, otherwise return false.
             bool isSucceedOperation = construction.CreateSecondLayer();
 
-            //If creation is being succeeded print the second layer of the construction,
+            //If the creation have been succeeded print the second layer of the construction,
             //otherwise print that there is no way to create a second layer.
             if (isSucceedOperation)
             {

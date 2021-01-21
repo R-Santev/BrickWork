@@ -6,7 +6,7 @@ using System.Text;
 namespace BrickWork
 {
     /// <summary>
-    /// Represent the rectangular area, which must be covered.
+    /// Represents the rectangular area, which must be covered.
     /// </summary>
     public class BrickWork
     {
@@ -32,7 +32,7 @@ namespace BrickWork
                 throw new ArgumentException("N and M must be smaller than 100 numbers!");
             }
 
-            //Record the size of the construction and initialize the layers.
+            //Records the size of the construction and initialize the layers.
             this.rows = rows;
             this.cols = cols;
             this.firstLayer = new int[rows, cols];
@@ -42,7 +42,7 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Print the second layer with surrounding on the console.
+        /// Prints the second layer with surrounding on the console.
         /// </summary>
         public void PrintSecondLayerWithSurrounding()
         {
@@ -50,7 +50,7 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Print the first layer on the console.
+        /// Prints the first layer on the console.
         /// </summary>
         public void PrintFirstLayer()
         {
@@ -59,7 +59,7 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Print the second layer on the console.
+        /// Prints the second layer on the console.
         /// </summary>
         public void PrintSecondLayer()
         {
@@ -68,14 +68,14 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Try to create a second layer.
+        /// Tries to create a second layer.
         /// </summary>
         /// <returns><c>true</c> if is possible, otherwise <c>false</c></returns>
         public bool CreateSecondLayer()
         {
-            //The initial num to represent a brick.
+            //The initial num, which represent a brick.
             int currentNum = 1;
-            // The initial coordinates where the building of the second layer starts.
+            // The initial coordinates, where the building of the second layer starts.
             int x = 0;
             int y = 0;
 
@@ -185,7 +185,7 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Read data from the console, to fill in the first layer.
+        /// Reads data from the console, to fill in the first layer.
         /// </summary>
         private void FillInputLayer()
         {
@@ -201,7 +201,7 @@ namespace BrickWork
                 {
                     for (int j = 0; j < this.cols; j++)
                     {
-                        //Fill in a current cell (part of a brick) in the first layer.
+                        //Fills in a current cell (part of a brick) in the first layer.
                         this.firstLayer[i, j] = row[j];
                     }
                 }
@@ -215,28 +215,28 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Trying to create the second layer recursively.
+        /// Tries to create the second layer recursively.
         /// </summary>
-        /// <param name="currentNum">The number, which represent the current brick.</param>
-        /// <param name="row">Point out the current row.</param>
-        /// <param name="col">Point out the current column.</param>
+        /// <param name="currentNum">The number, which represents the current brick.</param>
+        /// <param name="row">Points out the current row.</param>
+        /// <param name="col">Points out the current column.</param>
         /// <returns><returns><c>true</c> if succeeded, otherwise <c>false</c></returns>
         private bool Build(int currentNum, int row, int col)
         {
-            //Check whether the second layer is built (base case).
+            //Checks whether the second layer is built (base case).
             if (currentNum == firstLayer.GetLength(0) * firstLayer.GetLength(1) / 2 + 1)
             {
                 return true;
             }
 
-            //If this row is passed, go to the other.
+            //If this row is passed, goes to the other.
             if (col >= firstLayer.GetLength(1))
             {
                 col = 0;
                 row++;
             }
 
-            //If the wast roll is passed, the second layer is built.
+            //If the last row is passed, the second layer has been built.
             if (row >= firstLayer.GetLength(0))
             {
                 return true;
@@ -245,37 +245,37 @@ namespace BrickWork
             //If the current cell (part of a brick) is free...
             if (secondLayer[row, col] == 0)
             {
-                //...and can place the current brick horizontally...
+                //...and it can place the current brick horizontally...
                 if (CanPlaceRight(row, col))
                 {
-                    //...place the brick...
+                    //...it places the brick...
                     secondLayer[row, col] = currentNum;
                     secondLayer[row, col + 1] = currentNum;
 
-                    //and keep building with the next brick.
+                    //and keeps building with the next brick.
                     if (Build(currentNum + 1, row, col + 2))
                     {
                         return true;
                     }
-                    //Take a step back if there is no way to continue.
+                    //Takes a step back if there is no way to continue.
                     else
                     {
                         secondLayer[row, col] = 0;
                         secondLayer[row, col + 1] = 0;
                     }
                 }
-                //It try to place the brick vertically.
+                //Tries to place the brick vertically.
                 if (CanPlaceDown(row, col))
                 {
-                    //Place the brick vertically.
+                    //Places the brick vertically.
                     secondLayer[row, col] = currentNum;
                     secondLayer[row + 1, col] = currentNum;
-                    //Keep building with the next brick.
+                    //Keeps building with the next brick.
                     if (Build(currentNum + 1, row, col + 1))
                     {
                         return true;
                     }
-                    //It take a step back if there is no way to continue.
+                    //Takes a step back if there is no way to continue.
                     else
                     {
                         secondLayer[row, col] = 0;
@@ -285,7 +285,7 @@ namespace BrickWork
                 }
             }
             //If the current cell is not free (there is a brick on it),
-            //keep building with the next brick.
+            //keeps building with the next brick.
             else
             {
                 if (Build(currentNum, row, col + 1))
@@ -300,11 +300,11 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Check whether can place the brick horizontally.
+        /// Checks whether can place the brick horizontally.
         /// </summary>
-        /// <param name="row">Point out the current row, where the <see cref="Build(int, int, int)"/> method
+        /// <param name="row">Points out the current row, where the <see cref="Build(int, int, int)"/> method
         /// try to put the brick.</param>
-        /// <param name="col">Point out the current column, where the <see cref="Build(int, int, int)"/> method
+        /// <param name="col">Points out the current column, where the <see cref="Build(int, int, int)"/> method
         /// try to put the brick.</param>
         /// <returns><c>true</c> if the brick doesn't go beyond the outlines of the layer,
         /// the brick is not placed in the same way in the first layer and 
@@ -330,11 +330,11 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Check whether can place the brick vertically.
+        /// Checks whether can place the brick vertically.
         /// </summary>
-        /// <param name="row">Point out the current row, where the <see cref="Build(int, int, int)"/> method
+        /// <param name="row">Points out the current row, where the <see cref="Build(int, int, int)"/> method
         /// try to put the brick.</param>
-        /// <param name="col">Point out the current column, where the <see cref="Build(int, int, int)"/> method
+        /// <param name="col">Points out the current column, where the <see cref="Build(int, int, int)"/> method
         /// try to put the brick.</param>
         /// <returns><c>true</c> if the brick doesn't go beyond the outlines of the layer,
         /// the brick is not placed in the same way in the first layer and 
@@ -360,7 +360,7 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Create a string, which represent the given layer.
+        /// Creates a string, which represent the given layer.
         /// </summary>
         /// <param name="layer">The layer which must be represented as a string.</param>
         /// <returns>The string representation of the given layer.</returns>
@@ -382,19 +382,19 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Create a string, which represent the given layer with surrounding.
+        /// Creates a string, which represent the given layer with surroundings.
         /// </summary>
-        /// <param name="layer">The layer, which must be represented with surrounding as a string.</param>
-        /// <returns>The string representation of the given layer with surrounding</returns>
+        /// <param name="layer">The layer, which must be represented with surroundings as a string.</param>
+        /// <returns>The string representation of the given layer with surroundings</returns>
         private string LayerWithSurrounding(int[,] layer)
         {
             //Holds the string representation.
             StringBuilder sb = new StringBuilder();
 
-            //Check whether there is one-digit-numbers only.
+            //Checks whether there is one-digit-numbers only.
             bool onlyOneDigitNums = layer.GetLength(0) * layer.GetLength(1) / 2 < 10;
 
-            //Choose one of the methods depending on upper condition.
+            //Chooses one of the methods depending on upper condition.
             if (onlyOneDigitNums)
             {
                 sb.Append(CreateSurroundingForOneDigitNumbersOnly(layer));
@@ -408,16 +408,16 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Create the surrounding for layer with one-digit-numbers only.
+        /// Creates the surroundings for layer with one-digit-numbers only.
         /// </summary>
         /// <param name="layer">The layer, which must be surrounded.</param>
-        /// <returns>The string representation of the given layer with surrounding</returns>
+        /// <returns>The string representation of the given layer with surroundings</returns>
         private string CreateSurroundingForOneDigitNumbersOnly(int[,] layer)
         {
             //Holds the string representation.
             StringBuilder sb = new StringBuilder();
 
-            //Add the upper surrounding of the layer.
+            //Adds the upper surrounding of the layer.
             int matrixColumnsSize = layer.GetLength(1) * 2 + 1;
             for (int i = 0; i < matrixColumnsSize; i++)
             {
@@ -428,21 +428,21 @@ namespace BrickWork
             
             for (int i = 0; i < layer.GetLength(0); i++)
             {
-                //Add the left surrounding.
+                //Adds the left surrounding.
                 sb.Append('*');
 
-                //Add surrounding between the columns of the layer.
+                //Adds surroundings between the columns of the layer.
                 for (int j = 0; j < layer.GetLength(1); j++)
                 {
-                    //Add current part of a brick.
+                    //Adds current part of a brick.
                     sb.Append(layer[i, j]);
 
-                    //Add "-" if surrounding a brick.
+                    //Adds "-" if surrounds a brick.
                     if (j + 1 < layer.GetLength(1) && layer[i, j + 1] == layer[i, j])
                     {
                         sb.Append('-');
                     }
-                    //Add "*" if surrounding two different bricks or that is the end of the layer.
+                    //Adds "*" if surrounds two different bricks or that is the end of the layer.
                     else
                     {
                         sb.Append('*');
@@ -451,17 +451,17 @@ namespace BrickWork
                 }
 
                 sb.AppendLine();
-                //Add the left one.
+                //Adds the left one.
                 sb.Append('*');
-                //Start surrounding the rows.
+                //Starts surrounding the rows.
                 for (int j = 0; j < layer.GetLength(1); j++)
                 {
-                    //Add "-*" if surrounding a brick.
+                    //Adds "-*" if surrounds a brick.
                     if (i + 1 < layer.GetLength(0) && layer[i + 1, j] == layer[i, j])
                     {
                         sb.Append("-*");
                     }
-                    //Add "**" if surrounding two different bricks or that is the end of the layer.
+                    //Adds "**" if surrounds two different bricks or that is the end of the layer.
                     else
                     {
                         sb.Append("**");
@@ -476,16 +476,16 @@ namespace BrickWork
         }
 
         /// <summary>
-        /// Create the surrounding for layer with one and two digits.
+        /// Creates the surroundings for layer with one and two digits.
         /// </summary>
         /// <param name="layer">The layer, which must be surrounded.</param>
-        /// <returns>The string representation of the given layer with surrounding</returns>
+        /// <returns>The string representation of the given layer with surroundings</returns>
         private string CreateSurroundingForTwoDigitNumbers(int[,] layer)
         {
             //Holds the string representation of the layer.
             StringBuilder sb = new StringBuilder();
 
-            //Add the upper surrounding of the layer.
+            //Adds the upper surrounding of the layer.
             int matrixColumnsSize = layer.GetLength(1) * 3 + 1;
             for (int i = 0; i < matrixColumnsSize; i++)
             {
@@ -496,11 +496,11 @@ namespace BrickWork
 
             for (int i = 0; i < layer.GetLength(0); i++)
             {
-                //Add the left surrounding.
+                //Adds the left surrounding.
                 sb.Append('*');
                 for (int j = 0; j < layer.GetLength(1); j++)
                 {
-                    //If the current number is one digit, add a space after it.
+                    //If the current number is one digit, adds a space after it.
                     if (layer[i, j] < 10)
                     {
                         sb.Append(layer[i, j] + " ");
@@ -510,7 +510,7 @@ namespace BrickWork
                         sb.Append(layer[i, j]);
                     }
 
-                    //Add surroundings between the columns of the layer.
+                    //Adds surroundings between the columns of the layer.
                     if (j + 1 < layer.GetLength(1) && layer[i, j + 1] == layer[i, j])
                     {
                         sb.Append('-');
@@ -522,11 +522,11 @@ namespace BrickWork
 
                 }
 
-                //Add the left surroundings
+                //Adds the left surrounding
                 sb.AppendLine();
                 sb.Append('*');
 
-                //Add surroundings between the rows of the layer.
+                //Adds surroundings between the rows of the layer.
                 for (int j = 0; j < layer.GetLength(1); j++)
                 {
                     if (i + 1 < layer.GetLength(0) && layer[i + 1, j] == layer[i, j])
